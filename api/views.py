@@ -97,7 +97,7 @@ class RegistroView(APIView):
             case _:
                 return Response({"error": "Tipo de usuario inválido."}, status=400)           
         
-        serializer = UserSerializer(data=nuevoUser)
+        serializer = UserCreateSerializer(data=nuevoUser)
         if serializer.is_valid():
             user = serializer.save()
             
@@ -155,9 +155,11 @@ class LoginView(APIView):
         try:
             user = User.objects.get(email=email)
         except User.DoesNotExist:
+            print("xdddddddddddd")
             return Response({'detail': 'Credenciales inválidas'}, status=status.HTTP_401_UNAUTHORIZED)
 
         if not check_password(password, user.password_hash):
+            print("2")
             return Response({'detail': 'Credenciales inválidas'}, status=status.HTTP_401_UNAUTHORIZED)
 
         access = generate_access_token(user)
@@ -339,5 +341,27 @@ class LearnerToMentorView(APIView):
                 learner.save()
 
             return Response({'message': 'El usuario ha sido promovido a mentor'}, status=201)
+        
+        return Response(serializer.errors, status=400)
+    
+class CreateSessionView(APIView):
+    def post(self, request):
+        user = get_object_or_404(User, user_code=request.data.get("user_code"))
+        
+        if not hasattr(user, 'mentor'):
+            return Response({'error': 'Este usuario no es un mentor'}, status=400)
+        
+        mentor = user.mentor
+        fecha = datetime.now().strftime("%Y%m%d")
+        session_data = request.data.copy()
+        
+        session_data['mentor'] = mentor.id_mentor
+        session_data['uuid'] =  f"{fecha}{str(uuid.uuid4().hex)}"
+        session_data['status'] = "scheduled"
+        serializer = SessionSerializer(data=session_data)
+        
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=201)
         
         return Response(serializer.errors, status=400)

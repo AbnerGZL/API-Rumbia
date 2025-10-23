@@ -19,6 +19,12 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['user_code', 'first_name', 'last_name', 'email', 'learner', 'mentor']
+        
+
+class UserCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = '__all__'
 
     # def create(self, validated_data):
     #     # Encriptar el password antes de guardar

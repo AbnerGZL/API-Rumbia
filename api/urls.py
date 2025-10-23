@@ -17,5 +17,8 @@ urlpatterns = [
     # Método para añadir información de un learner
     path('post-learner/', LearnerUpdateInfoView.as_view(), name='post-learner'),
     # Método para añadir información de un mentor
-    path('post-mentor/', MentorUpdateInfoView.as_view(), name='post-mentor')
+    path('post-mentor/', MentorUpdateInfoView.as_view(), name='post-mentor'),
+    
+    # Método para que el mentor cree una nueva sesión
+    path('create-session/', CreateSessionView.as_view(), name='create-session')
 ]
