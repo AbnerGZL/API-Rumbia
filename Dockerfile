@@ -1,4 +1,4 @@
-FROM python:3.13-slim
+FROM python:3.12-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
@@ -7,30 +7,33 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     DJANGO_SETTINGS_MODULE=${PROJECT_NAME}.settings \
     PORT=8000
 
-# dependencias del sistema (ajusta si usas otro motor de BD)
+# Instalar dependencias del sistema
+# Incluimos: gcc, pkg-config, libmariadb-dev (para mysqlclient) y libpq-dev (para PostgreSQL opcional)
 RUN apt-get update \
- && apt-get install -y --no-install-recommends build-essential libpq-dev gcc \
+ && apt-get install -y --no-install-recommends \
+    build-essential \
+    gcc \
+    pkg-config \
+    libmariadb-dev \
+    libpq-dev \
  && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
-# copiar requirements y instalarlos primero para aprovechar cache de docker
+#  Copiar e instalar dependencias Python
 COPY requirements.txt /app/
 RUN pip install --upgrade pip setuptools wheel \
  && pip install -r requirements.txt
 
-# copiar el resto del proyecto
+#  Copiar todo el proyecto
 COPY . /app
 
-# crear usuario no-root y ajustar permisos
+#  Crear usuario no-root
 RUN addgroup --system app && adduser --system --ingroup app app \
  && chown -R app:app /app
-
 USER app
 
 EXPOSE ${PORT}
 
-# Al iniciar: migraciones, collectstatic y arranque con gunicorn.
-# Reemplaza PROJECT_NAME en tiempo de build o run si es necesario:
-# docker build --build-arg PROJECT_NAME=mi_proyecto -t miimagen .
+#  Migrar, collectstatic y arrancar con gunicorn
 CMD ["sh", "-c", "python manage.py migrate --noinput && python manage.py collectstatic --noinput && gunicorn ${PROJECT_NAME}.wsgi:application --bind 0.0.0.0:${PORT} --workers 3"]
