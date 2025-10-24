@@ -44,7 +44,7 @@ CORS_ALLOW_METHODS = [
     'DELETE',
     'OPTIONS',
 ]
-CORS_ALLOW_ALL_ORIGINS = False
+CORS_ALLOW_ALL_ORIGINS = True
 # ALLOWED_HOSTS = [
 #     'api-rumbia.onrender.com',
 #     'rumbia-studio.onrender.com',
