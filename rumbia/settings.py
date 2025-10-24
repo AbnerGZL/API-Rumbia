@@ -45,8 +45,10 @@ CORS_ALLOW_METHODS = [
 ]
 # CORS_ALLOW_ALL_ORIGINS = False
 ALLOWED_HOSTS = [
-    'https://rumbia-studio.onrender.com/',
-    'localhost'
+    'api-rumbia.onrender.com',
+    'rumbia-studio.onrender.com',
+    'localhost',
+    '127.0.0.1'
 ]
 
 # Application definition
