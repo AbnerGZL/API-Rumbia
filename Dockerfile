@@ -3,9 +3,11 @@ FROM python:3.12-slim
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PIP_NO_CACHE_DIR=1 \
-    PROJECT_NAME=rumbia \
-    DJANGO_SETTINGS_MODULE=${PROJECT_NAME}.settings \
+    # PROJECT_NAME=rumbia \
+    # DJANGO_SETTINGS_MODULE=${PROJECT_NAME}.settings \
     PORT=8000
+ENV PROJECT_NAME=rumbia
+ENV DJANGO_SETTINGS_MODULE=${PROJECT_NAME}.settings    
 
 # Instalar dependencias del sistema
 # Incluimos: gcc, pkg-config, libmariadb-dev (para mysqlclient) y libpq-dev (para PostgreSQL opcional)
