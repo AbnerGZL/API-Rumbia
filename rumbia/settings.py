@@ -30,7 +30,7 @@ JWT_REFRESH_TOKEN_LIFETIME = datetime.timedelta(days=7)
 DEBUG = True
 
 # Configuración de CORS
-CORS_ALLOW_CREDENTIALS = True
+# CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_HEADERS = list(default_headers) + [
     'content-type',
     'authorization',
@@ -44,13 +44,15 @@ CORS_ALLOW_METHODS = [
     'DELETE',
     'OPTIONS',
 ]
-# CORS_ALLOW_ALL_ORIGINS = False
-ALLOWED_HOSTS = [
-    'api-rumbia.onrender.com',
-    'rumbia-studio.onrender.com',
-    'localhost',
-    '127.0.0.1'
-]
+CORS_ALLOW_ALL_ORIGINS = False
+# ALLOWED_HOSTS = [
+#     'api-rumbia.onrender.com',
+#     'rumbia-studio.onrender.com',
+#     'localhost',
+#     '127.0.0.1'
+# ]
+ALLOWED_HOSTS = ['*']
+
 
 # Application definition
 
