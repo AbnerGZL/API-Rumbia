@@ -29,6 +29,9 @@ JWT_REFRESH_TOKEN_LIFETIME = datetime.timedelta(days=7)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# MIDDLEWARE SETTINGS
+APPEND_SLASH = False
+
 # Configuración de CORS
 # CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_HEADERS = list(default_headers) + [

@@ -30,7 +30,6 @@ def generate_access_token(user):
     token = jwt.encode(payload, SECRET, algorithm=ALGO)
     return token
 
-
 def generate_refresh_token(user):
     now = datetime.now()
     exp = now + settings.JWT_REFRESH_TOKEN_LIFETIME
@@ -119,7 +118,7 @@ class RegistroView(APIView):
             
             access = generate_access_token(user)
             refresh = generate_refresh_token(user)
-            response = Response({"detail": "Usuario registrado exitosamente"}, status=status.HTTP_201_CREATED)
+            response = Response({"user_code": user.user_code}, status=status.HTTP_201_CREATED)
 
             response.set_cookie(
                 key='access_token',
@@ -165,7 +164,7 @@ class LoginView(APIView):
         access = generate_access_token(user)
         refresh = generate_refresh_token(user)
 
-        response = Response({'message': 'Login éxito'}, status=status.HTTP_200_OK)
+        response = Response({'user_code': user.user_code}, status=status.HTTP_200_OK)
 
         # Set cookies (usa secure=True en producción con HTTPS)
         response.set_cookie(

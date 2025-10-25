@@ -154,7 +154,7 @@ class Payment(models.Model):
 class DataSession(models.Model):
     id_data = models.AutoField(primary_key=True)
     session = models.ForeignKey(Session, on_delete=models.CASCADE)
-    learner = models.ForeignKey(Learner, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     payment = models.ForeignKey(Payment, on_delete=models.CASCADE)
     is_present = models.BooleanField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
