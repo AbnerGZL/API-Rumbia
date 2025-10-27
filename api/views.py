@@ -356,7 +356,7 @@ class CreateSessionView(APIView):
         
         session_data['mentor'] = mentor.id_mentor
         session_data['uuid'] =  f"{fecha}{str(uuid.uuid4().hex)}"
-        session_data['status'] = "scheduled"
+        session_data['session_status'] = "scheduled"
         serializer = SessionSerializer(data=session_data)
         
         if serializer.is_valid():
