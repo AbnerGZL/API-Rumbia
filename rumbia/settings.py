@@ -12,13 +12,16 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 import datetime
 from corsheaders.defaults import default_headers
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 # STATIC_ROOT = BASE_DIR / "staticfiles"
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
+
+# Media files settings
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-kf^e5d$*8nm9o=lh^hlte@gpiua7+q6l#0yt&r(_3t$9z-s4*4'

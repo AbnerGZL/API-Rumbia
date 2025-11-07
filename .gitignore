@@ -7,6 +7,10 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# Archivos de media subidos
+.media/
+media/
+
 # Archivos de configuración locales
 *.env
 .env.local

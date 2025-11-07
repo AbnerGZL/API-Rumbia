@@ -14,6 +14,9 @@ from rest_framework import status
 # from .jwt_utils import decode_token, refresh_token_is_valid, revoke_refresh_token, generate_access_token, generate_refresh_token
 from django.contrib.auth.hashers import check_password, make_password
 
+from rest_framework.parsers import MultiPartParser, FormParser
+import os
+
 from django.db.models import Q
 
 ALGO = settings.JWT_ALGORITHM
@@ -422,3 +425,33 @@ class GetSessionsActives(APIView):
 
         # serializer = SessionSerializer(sessions, many=True)
         # return Response(serializer.data, status=status.HTTP_200_OK)
+        
+class UploadMentorImageView(APIView):
+    parser_classes = [MultiPartParser, FormParser]  # <- importante para manejar archivos
+
+    def post(self, request):
+        user_code = request.data.get("user_code")
+        image_file = request.FILES.get("profile_img")
+
+        if not user_code or not image_file:
+            return Response({"error": "user_code e image son requeridos"}, status=400)
+
+        user = get_object_or_404(User, user_code=user_code)
+        mentor = user.mentor
+
+        # Construir la ruta personalizada
+        folder_path = os.path.join(settings.MEDIA_ROOT, f"mentors/{user_code}/")
+        os.makedirs(folder_path, exist_ok=True)
+
+        # Guardar con el nombre del usuario
+        file_path = os.path.join(folder_path, image_file.name)
+        with open(file_path, 'wb+') as destination:
+            for chunk in image_file.chunks():
+                destination.write(chunk)
+
+        # Guardar la referencia en la base de datos
+        relative_path = f"mentors/{user_code}/{image_file.name}"
+        mentor.profile_img = relative_path
+        mentor.save()
+
+        return Response({"message": "Imagen subida correctamente", "path": relative_path}, status=200)

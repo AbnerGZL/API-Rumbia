@@ -1,4 +1,5 @@
 from django.urls import path
+from django.conf.urls.static import static
 from .views import *
 
 urlpatterns = [
@@ -23,4 +24,8 @@ urlpatterns = [
     path('create-session/', CreateSessionView.as_view(), name='create-session'),
     # Método para listar sesiones activas con filtros dinamicos
     path('get-sessions/', GetSessionsActives.as_view(), name='sessions'),
-]
+    
+    # Método para cargar imagen de perfil de mentor
+    path('post-mentor-image/', UploadMentorImageView.as_view(), name='mentor-image'),
+    
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
