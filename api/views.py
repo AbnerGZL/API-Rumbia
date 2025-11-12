@@ -425,6 +425,18 @@ class GetSessionsActives(APIView):
 
         # serializer = SessionSerializer(sessions, many=True)
         # return Response(serializer.data, status=status.HTTP_200_OK)
+
+class GetCareersView(APIView):
+    def get(self, request):
+        careers = Career.objects.select_related('category').all()
+        serializer = CareerSerializer(careers, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+class GetCategoriesView(APIView):
+    def get(self, request):
+        categories = CareerCategories.objects.all()
+        serializer = CategoriesSerializer(categories, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
         
 class UploadMentorImageView(APIView):
     parser_classes = [MultiPartParser, FormParser]  # <- importante para manejar archivos
@@ -435,6 +447,12 @@ class UploadMentorImageView(APIView):
 
         if not user_code or not image_file:
             return Response({"error": "user_code e image son requeridos"}, status=400)
+        
+        if image_file.size > 5 * 1024 * 1024:  # 5MB
+            return Response({"error": "El tamaño del archivo excede el límite de 5MB"}, status=400)
+        
+        if image_file.content_type not in ['image/jpeg', 'image/png', 'image/jpg']:
+            return Response({"error": "Tipo de archivo no soportado. Solo se permiten JPEG, PNG o JPG."}, status=400)
 
         user = get_object_or_404(User, user_code=user_code)
         mentor = user.mentor
@@ -443,6 +461,14 @@ class UploadMentorImageView(APIView):
         folder_path = os.path.join(settings.MEDIA_ROOT, f"mentors/{user_code}/")
         os.makedirs(folder_path, exist_ok=True)
 
+        image_file.name = f"profile_img{user_code}{os.path.splitext(image_file.name)[1]}"
+        
+        if mentor.profile_img:
+            # Eliminar la imagen anterior si existe
+            old_image_path = os.path.join(settings.MEDIA_ROOT, image_file.name)
+            if os.path.exists(old_image_path):
+                os.remove(old_image_path)
+        
         # Guardar con el nombre del usuario
         file_path = os.path.join(folder_path, image_file.name)
         with open(file_path, 'wb+') as destination:

@@ -32,6 +32,10 @@ class UserCreateSerializer(serializers.ModelSerializer):
     #         validated_data['password_hash'] = make_password(validated_data['password_hash'])
     #     return super(USERSSerializer, self).create(validated_data)          
 
+class CategoriesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CareerCategories
+        fields = '__all__'
 
 class CareerSerializer(serializers.ModelSerializer):
     class Meta:

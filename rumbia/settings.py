@@ -109,30 +109,30 @@ WSGI_APPLICATION = 'rumbia.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'rumbia',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': 'localhost',
-        'PORT': '3306',
-    }
-}
-
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
+#         'ENGINE': 'django.db.backends.mysql',
 #         'NAME': 'rumbia',
-#         'USER': 'rumbia_user',
-#         'PASSWORD': 's9U9rlZw9aSiurnKHPJ1j2Rf40Rkjl5A',
-#         'HOST': 'dpg-d3sqs89r0fns738mvaq0-a.oregon-postgres.render.com',
-#         'PORT': '5432',
-#         # 'OPTIONS': {
-#         #     'ssl': {'ca': '/path/to/ca.pem'}
-#         # }
+#         'USER': 'root',
+#         'PASSWORD': '',
+#         'HOST': 'localhost',
+#         'PORT': '3306',
 #     }
 # }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'rumbia',
+        'USER': 'rumbia_user',
+        'PASSWORD': 's9U9rlZw9aSiurnKHPJ1j2Rf40Rkjl5A',
+        'HOST': 'dpg-d3sqs89r0fns738mvaq0-a.oregon-postgres.render.com',
+        'PORT': '5432',
+        # 'OPTIONS': {
+        #     'ssl': {'ca': '/path/to/ca.pem'}
+        # }
+    }
+}
 
 
 # Password validation

@@ -24,6 +24,10 @@ urlpatterns = [
     path('create-session/', CreateSessionView.as_view(), name='create-session'),
     # Método para listar sesiones activas con filtros dinamicos
     path('get-sessions/', GetSessionsActives.as_view(), name='sessions'),
+    # Método para listar carreras disponibles
+    path('get-careers/', GetCareersView.as_view(), name='get-careers'),
+    # Método para listar catgorias de carreas
+    path('get-categories/', GetCategoriesView.as_view(), name='get-categories'),
     
     # Método para cargar imagen de perfil de mentor
     path('post-mentor-image/', UploadMentorImageView.as_view(), name='mentor-image'),
