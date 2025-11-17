@@ -21,7 +21,7 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # Media files settings
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = BASE_DIR / "media"
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-kf^e5d$*8nm9o=lh^hlte@gpiua7+q6l#0yt&r(_3t$9z-s4*4'
