@@ -31,5 +31,10 @@ urlpatterns = [
     
     # Método para cargar imagen de perfil de mentor
     path('post-mentor-image/', UploadMentorImageView.as_view(), name='mentor-image'),
+    # Método para actualizar informacion de una sesion
+    path('update-session/', UpdateSessionView.as_view(), name='update-session'),
+    
+    # Método para actualizar informacion de una sesion
+    path('inscribe-learner/', InscribeLearnerView.as_view(), name='inscribe-learner'),
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

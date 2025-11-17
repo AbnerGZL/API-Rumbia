@@ -149,6 +149,7 @@ class Session(models.Model):
 # -----------------------------------------------------
 class Payment(models.Model):
     id_pay = models.AutoField(primary_key=True)
+    data_session = models.OneToOneField('DataSession', on_delete=models.CASCADE)
     is_trial = models.BooleanField(default=False)
     amount = models.DecimalField(max_digits=6, decimal_places=2)
     currency = models.CharField(max_length=45, null=True, blank=True)
@@ -173,13 +174,12 @@ class DataSession(models.Model):
     id_data = models.AutoField(primary_key=True)
     session = models.ForeignKey(Session, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    payment = models.ForeignKey(Payment, on_delete=models.CASCADE)
-    is_present = models.BooleanField(null=True, blank=True)
+    is_present = models.BooleanField(null=True, blank=True, default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"DataSession for {self.learner}"
+        return f"DataSession for {self.user.first_name} in session {self.session.uuid}"
     
     class Meta:
         db_table = 'data_session'    

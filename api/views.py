@@ -481,3 +481,32 @@ class UploadMentorImageView(APIView):
         mentor.save()
 
         return Response({"message": "Imagen subida correctamente", "path": relative_path}, status=200)
+
+class UpdateSessionView(APIView):
+    def post(self, request, pk):
+        session = get_object_or_404(Session, uuid=pk)
+        serializer = SessionCreateSerializer(session, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class InscribeLearnerView(APIView):
+    def post(self, request):
+        user = get_object_or_404(User, user_code=request.data.get("user_code"))
+        # learner = user.learner
+        # if not hasattr(user, 'learner'):
+        #     return Response({'error': 'Este usuario no es un aprendiz'}, status=400)
+        
+        session = get_object_or_404(Session, uuid=request.data.get("uuid"))
+        
+        if DataSession.objects.filter(user=user, session=session).exists():
+            return Response({'error': 'El aprendiz ya está inscrito en esta sesión'}, status=400)
+        
+        inscription = DataSession.objects.create(
+            session=session,
+            user=user
+        )
+        
+        serializer = Data_SessionSerializer(inscription)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)

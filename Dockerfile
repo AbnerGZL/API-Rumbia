@@ -38,5 +38,5 @@ USER app
 EXPOSE ${PORT}
 
 #  Migrar, collectstatic y arrancar con gunicorn
-# CMD ["sh", "-c", "python manage.py migrate --noinput && python manage.py collectstatic --noinput && gunicorn ${PROJECT_NAME}.wsgi:application --bind 0.0.0.0:${PORT} --workers 3"]
-CMD ["sh", "-c", "python manage.py migrate --noinput && gunicorn ${PROJECT_NAME}.wsgi:application --bind 0.0.0.0:${PORT} --workers 3"]
+CMD ["sh", "-c", "python manage.py migrate --noinput && python manage.py collectstatic --noinput && gunicorn ${PROJECT_NAME}.wsgi:application --bind 0.0.0.0:${PORT} --workers 3"]
+# CMD ["sh", "-c", "python manage.py migrate --noinput && gunicorn ${PROJECT_NAME}.wsgi:application --bind 0.0.0.0:${PORT} --workers 3"]
