@@ -11,7 +11,7 @@ urlpatterns = [
     path('refresh/', RefreshTokenView.as_view(), name='refresh'),
     
     # Método para obtener información del Usuario
-    path('get-user-info/<str:pk>/', UserInfoView.as_view(), name='get-user-info'),
+    path('get-user-info/<str:pk>/', GetUserInfoView.as_view(), name='get-user-info'),
     # Método para promover learner a mentor
     path('learner-to-mentor/', LearnerToMentorView.as_view(), name='learner-to-mentor'),
     
@@ -23,7 +23,7 @@ urlpatterns = [
     # Método para que el mentor cree una nueva sesión
     path('create-session/', CreateSessionView.as_view(), name='create-session'),
     # Método para listar sesiones activas con filtros dinamicos
-    path('get-sessions/', GetSessionsActives.as_view(), name='sessions'),
+    path('get-sessions/', GetSessionsActivesView.as_view(), name='sessions'),
     # Método para listar carreras disponibles
     path('get-careers/', GetCareersView.as_view(), name='get-careers'),
     # Método para listar catgorias de carreas
@@ -36,5 +36,7 @@ urlpatterns = [
     
     # Método para actualizar informacion de una sesion
     path('inscribe-learner/', InscribeLearnerView.as_view(), name='inscribe-learner'),
+    # Método para obtener informacion de una sesion
+    path('get-session-info/<str:pk>/', GetSessionInfoView.as_view(), name='get-session-info'),
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

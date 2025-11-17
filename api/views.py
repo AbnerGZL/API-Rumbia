@@ -246,7 +246,7 @@ class RefreshTokenView(APIView):
             )
             return response
 
-class UserInfoView(APIView):
+class GetUserInfoView(APIView):
     def get(self, request, pk):
         learner = get_object_or_404(User, user_code=pk)
         if learner is None:
@@ -368,7 +368,7 @@ class CreateSessionView(APIView):
         
         return Response(serializer.errors, status=400)
 
-class GetSessionsActives(APIView):
+class GetSessionsActivesView(APIView):
     def get(self, request, pk=None):
         # /api/sessions/?session_status=active&start_date=2025-11-05&end_date=2025-11-10&career_id=2&category_id=1
         session_status = request.query_params.get('session_status', None) # Fijo
@@ -377,6 +377,12 @@ class GetSessionsActives(APIView):
         
         start_date = request.query_params.get('start_date', None)
         end_date = request.query_params.get('end_date', None)
+        
+        user_code = request.query_params.get('mentor', None)
+        if user_code is not None:
+            user = User.objects.filter(user_code=user_code).first()
+        
+        mentor = user.mentor if user else None
 
         sessions = Session.objects.select_related(
             'mentor', 'mentor__career', 'mentor__career__category'
@@ -403,6 +409,9 @@ class GetSessionsActives(APIView):
 
         if category_id:
             filters &= Q(mentor__career__category__id_category=category_id)
+        
+        if mentor:
+            filters &= Q(mentor=mentor)
 
         sessions = sessions.filter(filters).order_by('-schedule_date')
         serializer = SessionSerializer(sessions, many=True)
@@ -411,6 +420,7 @@ class GetSessionsActives(APIView):
             {
                 "count": len(serializer.data),
                 "filters_applied": {
+                    "mentor": mentor.id_mentor if mentor else None,
                     "status": session_status,
                     "career_id": career_id,
                     "category_id": category_id,
@@ -508,3 +518,9 @@ class InscribeLearnerView(APIView):
         
         serializer = Data_SessionSerializer(inscription)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+class GetSessionInfoView(APIView):
+    def get(self, request, pk):
+        session = get_object_or_404(Session, uuid=pk)
+        serializer = SessionSerializer(session)
+        return Response(serializer.data, status=status.HTTP_200_OK)
