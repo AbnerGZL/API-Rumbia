@@ -37,10 +37,22 @@ APPEND_SLASH = False
 
 # Configuración de CORS
 CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+    "https://rumbia-studio.onrender.com",
+]
+
 CORS_ALLOW_HEADERS = list(default_headers) + [
     'content-type',
+    'multipart/form-data',
     'authorization',
 ]
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:5173",
+    "https://rumbia-studio.onrender.com",
+]
+
 
 CORS_ALLOW_METHODS = [
     'GET',
