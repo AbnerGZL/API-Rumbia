@@ -36,7 +36,7 @@ DEBUG = True
 APPEND_SLASH = False
 
 # Configuración de CORS
-# CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_HEADERS = list(default_headers) + [
     'content-type',
     'authorization',
@@ -50,7 +50,7 @@ CORS_ALLOW_METHODS = [
     'DELETE',
     'OPTIONS',
 ]
-CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOW_ALL_ORIGINS = True
 # ALLOWED_HOSTS = [
 #     'api-rumbia.onrender.com',
 #     'rumbia-studio.onrender.com',
