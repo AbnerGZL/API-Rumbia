@@ -491,8 +491,8 @@ class UploadMentorImageView(APIView):
         return Response({"message": "Imagen subida correctamente", "path": relative_path}, status=200)
 
 class UpdateSessionView(APIView):
-    def post(self, request, pk):
-        session = get_object_or_404(Session, uuid=pk)
+    def post(self, request):
+        session = get_object_or_404(Session, uuid=request.data.get("uuid"))
         serializer = SessionCreateSerializer(session, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
