@@ -42,11 +42,15 @@ CORS_ALLOWED_ORIGINS = [
     "https://rumbia-studio.onrender.com",
 ]
 
-CORS_ALLOW_HEADERS = list(default_headers) + [
-    'content-type',
-    'multipart/form-data',
-    'authorization',
-]
+CORS_ALLOW_HEADERS = list(default_headers)
+# CORS_ALLOW_HEADERS = [
+#     'content-type',
+#     'authorization',
+#     'accept',
+#     'origin',
+#     'x-requested-with',
+# ]
+
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5173",
