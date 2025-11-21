@@ -369,7 +369,7 @@ class CreateSessionView(APIView):
         return Response(serializer.errors, status=400)
 
 class GetSessionsActivesView(APIView):
-    def get(self, request, pk=None):
+    def get(self, request):
         # /api/sessions/?session_status=active&start_date=2025-11-05&end_date=2025-11-10&career_id=2&category_id=1
         session_status = request.query_params.get('session_status', None) # Fijo
         career_id = request.query_params.get('career_id', None)
@@ -379,6 +379,7 @@ class GetSessionsActivesView(APIView):
         end_date = request.query_params.get('end_date', None)
         
         user_code = request.query_params.get('mentor', None)
+        user = None
         if user_code is not None:
             user = User.objects.filter(user_code=user_code).first()
         
