@@ -139,10 +139,10 @@ WSGI_APPLICATION = 'rumbia.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'rumbia',
+        'NAME': 'rumbia_j01n',
         'USER': 'rumbia_user',
-        'PASSWORD': 's9U9rlZw9aSiurnKHPJ1j2Rf40Rkjl5A',
-        'HOST': 'dpg-d3sqs89r0fns738mvaq0-a.oregon-postgres.render.com',
+        'PASSWORD': 't3VrT70WaMwrrdK35mYkU1SBpzeDMXaj',
+        'HOST': 'dpg-d4gumkpr0fns739tafq0-a.oregon-postgres.render.com',
         'PORT': '5432',
         # 'OPTIONS': {
         #     'ssl': {'ca': '/path/to/ca.pem'}
