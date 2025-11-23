@@ -471,7 +471,7 @@ class UploadMentorImageView(APIView):
         if not user_code or not image_file:
             return Response({"error": "user_code e image son requeridos"}, status=400)
         
-        if image_file.size > 5 * 1024 * 1024:  # 5MB
+        if image_file.size > 15 * 1024 * 1024:  # 15MB
             return Response({"error": "El tamaño del archivo excede el límite de 5MB"}, status=400)
         
         if image_file.content_type not in ['image/jpeg', 'image/png', 'image/jpg']:

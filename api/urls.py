@@ -14,6 +14,8 @@ urlpatterns = [
     path('get-user-info/<str:pk>/', GetUserInfoView.as_view(), name='get-user-info'),
     # Método para promover learner a mentor
     path('learner-to-mentor/', LearnerToMentorView.as_view(), name='learner-to-mentor'),
+    # Método para actualizar datos de usuario
+    path('update-user/', UpdateUserView.as_view(), name='update-user'),
     
     # Método para añadir información de un learner
     path('post-learner/', LearnerUpdateInfoView.as_view(), name='post-learner'),
