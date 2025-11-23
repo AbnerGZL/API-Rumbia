@@ -246,6 +246,20 @@ class RefreshTokenView(APIView):
             )
             return response
 
+class UpdateUserView(APIView):
+    def post(self, request):
+        user = get_object_or_404(User, user_code=request.data.get("user_code"))
+        
+        update = request.data.copy()
+        if request.data.get("password"):
+            update['password_hash'] = make_password(request.data.get("password"))
+                
+        serializer = UserCreateSerializer(user, data=update, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 class GetUserInfoView(APIView):
     def get(self, request, pk):
         learner = get_object_or_404(User, user_code=pk)
