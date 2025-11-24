@@ -262,10 +262,19 @@ class UpdateUserView(APIView):
 
 class GetUserInfoView(APIView):
     def get(self, request, pk):
-        learner = get_object_or_404(User, user_code=pk)
-        if learner is None:
-            return Response({'error': 'Este usuario no tiene un perfil de aprendiz asociado'}, status=404)
-        data = UserSerializer(learner).data
+        user = get_object_or_404(User, user_code=pk)
+        data = UserSerializer(user).data
+        if hasattr(user, 'mentor'):
+            if user.mentor.is_mentor:
+                mentor = get_object_or_404(Mentor, id_mentor=user.mentor.id_mentor)
+                print("este es el id: ",mentor.id_mentor)
+                if hasattr(mentor, 'professionalprofile'):
+                    profile = mentor.professionalprofile
+                    data['professional_profile'] = Professional_ProfileSerializer(profile).data
+                elif hasattr(mentor, 'studentprofile'):
+                    profile = mentor.studentprofile
+                    data['student_profile'] = Student_ProfileSerializer(profile).data
+                return Response(data, status=status.HTTP_200_OK)
         return Response(data, status=status.HTTP_200_OK) 
 
 class LearnerUpdateInfoView(APIView):

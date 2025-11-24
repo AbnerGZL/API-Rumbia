@@ -242,7 +242,7 @@ class StudentProfile(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"StudentProfile {self.id_student} - {self.institution_name}"
+        return f"StudentProfile {self.id_student} - {self.college}"
     
     class Meta:
         db_table = 'student_profile'
