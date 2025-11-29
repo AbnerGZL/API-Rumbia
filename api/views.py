@@ -559,6 +559,9 @@ class GetSessionsByUserView(APIView):
         
         session_status = request.query_params.get('session_status', None) # Fijo
         
+        if tipo_session not in ['learner', 'mentor']:
+            return Response({'error': 'tipo_session inválido. Debe ser "learner" o "mentor".'}, status=400)
+        
         filters = Q()
         sessions = None
         
