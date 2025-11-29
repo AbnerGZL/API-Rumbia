@@ -40,5 +40,7 @@ urlpatterns = [
     path('inscribe-learner/', InscribeLearnerView.as_view(), name='inscribe-learner'),
     # Método para obtener informacion de una sesion
     path('get-session-info/<str:pk>/', GetSessionInfoView.as_view(), name='get-session-info'),
+    # Método para obtener sesiones de un usuario (learner o mentor)
+    path('get-user-sessions/<str:pk>/', GetSessionsByUserView.as_view(), name='get-user-sessions'),
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

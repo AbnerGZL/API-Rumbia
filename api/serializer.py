@@ -44,10 +44,22 @@ class CareerSerializer(serializers.ModelSerializer):
 
 
 class SessionSerializer(serializers.ModelSerializer):
+    mentor = MentorSerializer(read_only=True)
+    career = serializers.SerializerMethodField()
+    category = serializers.SerializerMethodField()
     class Meta:
         model = Session
         fields = '__all__'
-        depth = 2
+        
+    def get_career(self, obj):
+        if obj.mentor and obj.mentor.career:
+            return CareerSerializer(obj.mentor.career).data
+        return None
+
+    def get_category(self, obj):
+        if obj.mentor and obj.mentor.career and obj.mentor.career.category:
+            return CategoriesSerializer(obj.mentor.career.category).data
+        return None
         
         
 class SessionCreateSerializer(serializers.ModelSerializer):

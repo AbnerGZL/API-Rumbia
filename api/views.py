@@ -548,3 +548,45 @@ class GetSessionInfoView(APIView):
         session = get_object_or_404(Session, uuid=pk)
         serializer = SessionSerializer(session)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+class GetSessionsByUserView(APIView):
+    def get(self, request, pk):
+        user = get_object_or_404(User, user_code=pk)
+        mentor = user.mentor if hasattr(user, 'mentor') else None
+        
+        # learner solo tiene sesiones de aprendizaje mientras que mentor tiene sesiones de mentoría
+        tipo_session = request.query_params.get('tipo_session', None)  # 'learner' o 'mentor' FIJO
+        
+        session_status = request.query_params.get('session_status', None) # Fijo
+        
+        filters = Q()
+        sessions = None
+        
+        if tipo_session == 'learner':
+            filters &= Q(user=user)
+
+            if session_status:
+                filters &= Q(session__session_status=session_status)
+
+            sessions = DataSession.objects.select_related('session').filter(filters).order_by('-session__schedule_date')
+            
+        if tipo_session == 'mentor':
+            filters &= Q(mentor=mentor)
+
+            if session_status:
+                filters &= Q(session_status=session_status)
+            sessions = Session.objects.select_related('mentor').filter(filters).order_by('-schedule_date')
+
+        serializer = SessionSerializer(sessions, many=True)
+        
+        return Response(
+            {
+                "count": len(serializer.data),
+                "filters_applied": {
+                    "user": user.user_code,
+                    "tipo_session": tipo_session,
+                    "session_status": session_status,
+                },
+                "results": serializer.data
+            },
+            status=status.HTTP_200_OK)
