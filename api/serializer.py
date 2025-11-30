@@ -30,7 +30,12 @@ class UserCreateSerializer(serializers.ModelSerializer):
     #     # Encriptar el password antes de guardar
     #     if 'password_hash' in validated_data:
     #         validated_data['password_hash'] = make_password(validated_data['password_hash'])
-    #     return super(USERSSerializer, self).create(validated_data)          
+    #     return super(USERSSerializer, self).create(validated_data)
+    
+class UserBasicSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ("user_code", "first_name", "last_name", "email")
 
 class CategoriesSerializer(serializers.ModelSerializer):
     class Meta:
@@ -42,9 +47,9 @@ class CareerSerializer(serializers.ModelSerializer):
         model = Career
         fields = '__all__'
 
-
 class SessionSerializer(serializers.ModelSerializer):
     mentor = MentorSerializer(read_only=True)
+    user = serializers.SerializerMethodField()
     career = serializers.SerializerMethodField()
     category = serializers.SerializerMethodField()
     class Meta:
@@ -59,6 +64,11 @@ class SessionSerializer(serializers.ModelSerializer):
     def get_category(self, obj):
         if obj.mentor and obj.mentor.career and obj.mentor.career.category:
             return CategoriesSerializer(obj.mentor.career.category).data
+        return None
+    
+    def get_user(self, obj):
+        if obj.mentor and obj.mentor.user:
+            return UserBasicSerializer(obj.mentor.user).data
         return None
         
         
