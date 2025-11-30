@@ -78,6 +78,7 @@ class Data_SessionSerializer(serializers.ModelSerializer):
     class Meta:
         model = DataSession
         fields = '__all__'
+        depth = 1
 
 
 class ReviewSerializer(serializers.ModelSerializer):

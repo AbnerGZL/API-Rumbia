@@ -565,13 +565,22 @@ class GetSessionsByUserView(APIView):
         filters = Q()
         sessions = None
         
+        # if tipo_session == 'learner':
+        #     filters &= Q(user=user)
+
+        #     if session_status:
+        #         filters &= Q(session__session_status=session_status)
+
+        #     sessions = DataSession.objects.select_related('session','session__mentor', 'session__mentor__user').filter(filters).order_by('-session__schedule_date')
+            
         if tipo_session == 'learner':
-            filters &= Q(user=user)
-
+            filters &= Q(datasession__user=user)
+            
             if session_status:
-                filters &= Q(session__session_status=session_status)
+                filters &= Q(session_status=session_status)
 
-            sessions = DataSession.objects.select_related('session').filter(filters).order_by('-session__schedule_date')
+            sessions = Session.objects.filter(filters).select_related('mentor', 'mentor__user').order_by('-schedule_date')
+            
             
         if tipo_session == 'mentor':
             filters &= Q(mentor=mentor)
